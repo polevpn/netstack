@@ -23,17 +23,17 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/google/netstack/rand"
-	"github.com/google/netstack/sleep"
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/hash/jenkins"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/iptables"
-	"github.com/google/netstack/tcpip/seqnum"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/tmutex"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/rand"
+	"github.com/polevpn/netstack/sleep"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/hash/jenkins"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/iptables"
+	"github.com/polevpn/netstack/tcpip/seqnum"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tmutex"
+	"github.com/polevpn/netstack/waiter"
 )
 
 // EndpointState represents the state of a TCP endpoint.

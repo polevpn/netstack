@@ -21,7 +21,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/google/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip"
 )
 
 const (

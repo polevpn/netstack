@@ -17,7 +17,7 @@ package header_test
 import (
 	"testing"
 
-	"github.com/google/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/header"
 )
 
 func TestIPv4(t *testing.T) {

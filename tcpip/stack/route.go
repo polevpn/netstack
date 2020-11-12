@@ -15,10 +15,10 @@
 package stack
 
 import (
-	"github.com/google/netstack/sleep"
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
+	"github.com/polevpn/netstack/sleep"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
 )
 
 // Route represents a route through the networking stack to a given destination.

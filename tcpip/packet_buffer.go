@@ -13,7 +13,7 @@
 
 package tcpip
 
-import "github.com/google/netstack/tcpip/buffer"
+import "github.com/polevpn/netstack/tcpip/buffer"
 
 // A PacketBuffer contains all the data of a network packet.
 //

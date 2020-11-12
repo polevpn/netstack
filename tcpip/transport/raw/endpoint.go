@@ -28,12 +28,12 @@ package raw
 import (
 	"sync"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/iptables"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/iptables"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/waiter"
 )
 
 // +stateify savable

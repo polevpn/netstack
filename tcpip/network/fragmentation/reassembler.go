@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/buffer"
 )
 
 type hole struct {

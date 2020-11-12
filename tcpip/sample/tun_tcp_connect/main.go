@@ -50,17 +50,17 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/link/fdbased"
-	"github.com/google/netstack/tcpip/link/rawfile"
-	"github.com/google/netstack/tcpip/link/sniffer"
-	"github.com/google/netstack/tcpip/link/tun"
-	"github.com/google/netstack/tcpip/network/ipv4"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/tcpip/transport/tcp"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/link/fdbased"
+	"github.com/polevpn/netstack/tcpip/link/rawfile"
+	"github.com/polevpn/netstack/tcpip/link/sniffer"
+	"github.com/polevpn/netstack/tcpip/link/tun"
+	"github.com/polevpn/netstack/tcpip/network/ipv4"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tcpip/transport/tcp"
+	"github.com/polevpn/netstack/waiter"
 )
 
 // writer reads from standard input and writes to the endpoint until standard

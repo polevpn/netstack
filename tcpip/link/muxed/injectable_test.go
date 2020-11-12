@@ -21,11 +21,11 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/link/fdbased"
-	"github.com/google/netstack/tcpip/network/ipv4"
-	"github.com/google/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/link/fdbased"
+	"github.com/polevpn/netstack/tcpip/network/ipv4"
+	"github.com/polevpn/netstack/tcpip/stack"
 )
 
 func TestInjectableEndpointRawDispatch(t *testing.T) {

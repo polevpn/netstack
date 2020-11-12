@@ -15,7 +15,7 @@
 package iptables
 
 import (
-	"github.com/google/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/buffer"
 )
 
 // A Hook specifies one of the hooks built into the network stack.

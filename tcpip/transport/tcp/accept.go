@@ -22,14 +22,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/netstack/rand"
-	"github.com/google/netstack/sleep"
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/seqnum"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/rand"
+	"github.com/polevpn/netstack/sleep"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/seqnum"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/waiter"
 )
 
 const (

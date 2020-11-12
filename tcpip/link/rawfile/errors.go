@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"syscall"
 
-	"github.com/google/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip"
 )
 
 const maxErrno = 134

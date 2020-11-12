@@ -19,14 +19,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/link/channel"
-	"github.com/google/netstack/tcpip/link/sniffer"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/tcpip/transport/icmp"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/link/channel"
+	"github.com/polevpn/netstack/tcpip/link/sniffer"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tcpip/transport/icmp"
+	"github.com/polevpn/netstack/waiter"
 )
 
 const (

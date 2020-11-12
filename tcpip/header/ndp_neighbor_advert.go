@@ -14,7 +14,7 @@
 
 package header
 
-import "github.com/google/netstack/tcpip"
+import "github.com/polevpn/netstack/tcpip"
 
 // NDPNeighborAdvert is an NDP Neighbor Advertisement message. It will
 // only contain the body of an ICMPv6 packet.

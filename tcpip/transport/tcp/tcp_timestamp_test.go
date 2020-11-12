@@ -20,13 +20,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/checker"
-	"github.com/google/netstack/tcpip/header"
-	"github.com/google/netstack/tcpip/transport/tcp"
-	"github.com/google/netstack/tcpip/transport/tcp/testing/context"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/checker"
+	"github.com/polevpn/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/transport/tcp"
+	"github.com/polevpn/netstack/tcpip/transport/tcp/testing/context"
+	"github.com/polevpn/netstack/waiter"
 )
 
 // createConnectedWithTimestampOption creates and connects c.ep with the

@@ -16,9 +16,9 @@
 package muxed
 
 import (
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/stack"
 )
 
 // InjectableEndpoint is an injectable multi endpoint. The endpoint has

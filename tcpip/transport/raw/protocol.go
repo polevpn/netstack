@@ -15,10 +15,10 @@
 package raw
 
 import (
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/stack"
-	"github.com/google/netstack/tcpip/transport/packet"
-	"github.com/google/netstack/waiter"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/stack"
+	"github.com/polevpn/netstack/tcpip/transport/packet"
+	"github.com/polevpn/netstack/waiter"
 )
 
 // EndpointFactory implements stack.RawFactory.

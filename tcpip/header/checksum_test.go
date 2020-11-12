@@ -19,8 +19,8 @@ package header_test
 import (
 	"testing"
 
-	"github.com/google/netstack/tcpip/buffer"
-	"github.com/google/netstack/tcpip/header"
+	"github.com/polevpn/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip/header"
 )
 
 func TestChecksumVVWithOffset(t *testing.T) {

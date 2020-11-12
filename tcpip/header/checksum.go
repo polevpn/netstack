@@ -19,8 +19,8 @@ package header
 import (
 	"encoding/binary"
 
-	"github.com/google/netstack/tcpip"
-	"github.com/google/netstack/tcpip/buffer"
+	"github.com/polevpn/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip/buffer"
 )
 
 func calculateChecksum(buf []byte, odd bool, initial uint32) (uint16, bool) {

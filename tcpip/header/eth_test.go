@@ -17,7 +17,7 @@ package header
 import (
 	"testing"
 
-	"github.com/google/netstack/tcpip"
+	"github.com/polevpn/netstack/tcpip"
 )
 
 func TestIsValidUnicastEthernetAddress(t *testing.T) {
