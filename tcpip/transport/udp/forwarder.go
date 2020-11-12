@@ -82,7 +82,7 @@ func (r *ForwarderRequest) CreateEndpoint(queue *waiter.Queue) (tcpip.Endpoint, 
 	ep.route = r.route.Clone()
 	ep.dstPort = r.id.RemotePort
 	ep.RegisterNICID = r.route.NICID()
-
+	ep.effectiveNetProtos = []tcpip.NetworkProtocolNumber{r.route.NetProto}
 	ep.state = StateConnected
 
 	ep.rcvMu.Lock()
