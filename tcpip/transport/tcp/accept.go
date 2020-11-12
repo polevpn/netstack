@@ -420,7 +420,7 @@ func (e *endpoint) handleListenSegment(ctx *listenContext, s *segment) {
 	// for accepted sockets.
 
 	switch {
-	case s.flags == header.TCPFlagSyn:
+	case (s.flags & header.TCPFlagSyn) != 0:
 		opts := parseSynSegmentOptions(s)
 		if incSynRcvdCount() {
 			// Only handle the syn if the following conditions hold
