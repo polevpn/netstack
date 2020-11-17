@@ -55,6 +55,11 @@ func New(size int, mtu uint32, linkAddr tcpip.LinkAddress) *Endpoint {
 
 // Drain removes all outbound packets from the channel and counts them.
 func (e *Endpoint) Drain() int {
+
+	if e.ch == nil {
+		return 0
+	}
+
 	c := 0
 	for {
 		select {
@@ -67,6 +72,10 @@ func (e *Endpoint) Drain() int {
 }
 
 func (e *Endpoint) Read() (*PacketInfo, error) {
+
+	if e.ch == nil {
+		return nil, errors.New("link channel is closed")
+	}
 
 	pkgInfo, ok := <-e.ch
 	if !ok {
