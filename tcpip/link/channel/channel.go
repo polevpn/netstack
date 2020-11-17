@@ -18,6 +18,8 @@
 package channel
 
 import (
+	"errors"
+
 	"github.com/polevpn/netstack/tcpip"
 	"github.com/polevpn/netstack/tcpip/buffer"
 	"github.com/polevpn/netstack/tcpip/stack"
@@ -39,13 +41,13 @@ type Endpoint struct {
 	GSO        bool
 
 	// C is where outbound packets are queued.
-	C chan PacketInfo
+	ch chan PacketInfo
 }
 
 // New creates a new channel endpoint.
 func New(size int, mtu uint32, linkAddr tcpip.LinkAddress) *Endpoint {
 	return &Endpoint{
-		C:        make(chan PacketInfo, size),
+		ch:       make(chan PacketInfo, size),
 		mtu:      mtu,
 		linkAddr: linkAddr,
 	}
@@ -56,12 +58,32 @@ func (e *Endpoint) Drain() int {
 	c := 0
 	for {
 		select {
-		case <-e.C:
+		case <-e.ch:
 			c++
 		default:
 			return c
 		}
 	}
+}
+
+func (e *Endpoint) Read() (*PacketInfo, error) {
+
+	pkgInfo, ok := <-e.ch
+	if !ok {
+		return nil, errors.New("link channel closed")
+	}
+	return &pkgInfo, nil
+
+}
+
+func (e *Endpoint) Close() {
+	if e.ch == nil {
+		return
+	}
+	ch := e.ch
+	e.ch = nil
+	close(ch)
+
 }
 
 // InjectInbound injects an inbound packet.
@@ -118,6 +140,11 @@ func (e *Endpoint) LinkAddress() tcpip.LinkAddress {
 
 // WritePacket stores outbound packets into the channel.
 func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.NetworkProtocolNumber, pkt tcpip.PacketBuffer) *tcpip.Error {
+
+	if e.ch == nil {
+		return tcpip.ErrBadLinkEndpoint
+	}
+
 	p := PacketInfo{
 		Pkt:   pkt,
 		Proto: protocol,
@@ -125,7 +152,7 @@ func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.Ne
 	}
 
 	select {
-	case e.C <- p:
+	case e.ch <- p:
 	default:
 	}
 
@@ -134,6 +161,11 @@ func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.Ne
 
 // WritePackets stores outbound packets into the channel.
 func (e *Endpoint) WritePackets(_ *stack.Route, gso *stack.GSO, hdrs []stack.PacketDescriptor, payload buffer.VectorisedView, protocol tcpip.NetworkProtocolNumber) (int, *tcpip.Error) {
+
+	if e.ch == nil {
+		return 0, tcpip.ErrBadLinkEndpoint
+	}
+
 	payloadView := payload.ToView()
 	n := 0
 packetLoop:
@@ -150,7 +182,7 @@ packetLoop:
 		}
 
 		select {
-		case e.C <- p:
+		case e.ch <- p:
 			n++
 		default:
 			break packetLoop
@@ -162,6 +194,9 @@ packetLoop:
 
 // WriteRawPacket implements stack.LinkEndpoint.WriteRawPacket.
 func (e *Endpoint) WriteRawPacket(vv buffer.VectorisedView) *tcpip.Error {
+	if e.ch == nil {
+		return tcpip.ErrBadLinkEndpoint
+	}
 	p := PacketInfo{
 		Pkt:   tcpip.PacketBuffer{Data: vv},
 		Proto: 0,
@@ -169,7 +204,7 @@ func (e *Endpoint) WriteRawPacket(vv buffer.VectorisedView) *tcpip.Error {
 	}
 
 	select {
-	case e.C <- p:
+	case e.ch <- p:
 	default:
 	}
 
