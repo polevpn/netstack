@@ -682,7 +682,7 @@ type NetworkProtocolNumber uint32
 
 // A StatCounter keeps track of a statistic.
 type StatCounter struct {
-	count uint64
+	count uint32
 }
 
 // Increment adds one to the counter.
@@ -697,12 +697,12 @@ func (s *StatCounter) Decrement() {
 
 // Value returns the current value of the counter.
 func (s *StatCounter) Value() uint64 {
-	return atomic.LoadUint64(&s.count)
+	return uint64(atomic.LoadUint32(&s.count))
 }
 
 // IncrementBy increments the counter by v.
 func (s *StatCounter) IncrementBy(v uint64) {
-	atomic.AddUint64(&s.count, v)
+	atomic.AddUint32(&s.count, uint32(v))
 }
 
 func (s *StatCounter) String() string {
