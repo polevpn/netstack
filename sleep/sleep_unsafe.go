@@ -95,6 +95,20 @@ func gopark(unlockf func(uintptr, *uintptr) bool, wg *uintptr, reason uint8, tra
 //go:linkname goready runtime.goready
 func goready(g uintptr, traceskip int)
 
+func commitSleep(g uintptr, waitingG *uintptr) bool {
+        for {
+                // Check if the wait was aborted.
+                if atomic.LoadUintptr(waitingG) == 0 {
+                        return false
+                }
+
+                // Try to store the G so that wakers know who to wake.
+                if atomic.CompareAndSwapUintptr(waitingG, preparingG, g) {
+                        return true
+                }
+        }
+}
+
 // Sleeper allows a goroutine to sleep and receive wake up notifications from
 // Wakers in an efficient way.
 //
