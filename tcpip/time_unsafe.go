@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build go1.9
 // +build go1.9
-// +build !go1.18
 
 // Check go:linkname function signatures when updating Go version.
 
