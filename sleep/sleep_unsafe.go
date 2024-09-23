@@ -13,7 +13,6 @@
 // limitations under the License.
 
 // +build go1.11
-// +build !go1.18
 
 // Check go:linkname function signatures when updating Go version.
 
