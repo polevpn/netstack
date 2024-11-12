@@ -40,6 +40,7 @@ type Endpoint struct {
 	mtu        uint32
 	linkAddr   tcpip.LinkAddress
 	GSO        bool
+	closed     bool
 	mu         *sync.RWMutex
 	// C is where outbound packets are queued.
 	ch chan PacketInfo
@@ -51,19 +52,13 @@ func New(size int, mtu uint32, linkAddr tcpip.LinkAddress) *Endpoint {
 		ch:       make(chan PacketInfo, size),
 		mtu:      mtu,
 		linkAddr: linkAddr,
+		closed:   false,
 		mu:       &sync.RWMutex{},
 	}
 }
 
 // Drain removes all outbound packets from the channel and counts them.
 func (e *Endpoint) Drain() int {
-
-	e.mu.RLock()
-	defer e.mu.RUnlock()
-
-	if e.ch == nil {
-		return 0
-	}
 
 	c := 0
 	for {
@@ -78,13 +73,6 @@ func (e *Endpoint) Drain() int {
 
 func (e *Endpoint) Read() (*PacketInfo, error) {
 
-	e.mu.RLock()
-	defer e.mu.RUnlock()
-
-	if e.ch == nil {
-		return nil, errors.New("link channel is closed")
-	}
-
 	pkgInfo, ok := <-e.ch
 	if !ok {
 		return nil, errors.New("link channel closed")
@@ -94,17 +82,13 @@ func (e *Endpoint) Read() (*PacketInfo, error) {
 }
 
 func (e *Endpoint) Close() {
-
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
-	if e.ch == nil {
-		return
+	if !e.closed {
+		close(e.ch)
+		e.closed = true
 	}
-	ch := e.ch
-	e.ch = nil
-	close(ch)
-
 }
 
 // InjectInbound injects an inbound packet.
@@ -165,7 +149,7 @@ func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.Ne
 	e.mu.RLock()
 	defer e.mu.RUnlock()
 
-	if e.ch == nil {
+	if e.closed {
 		return tcpip.ErrBadLinkEndpoint
 	}
 
@@ -189,7 +173,7 @@ func (e *Endpoint) WritePackets(_ *stack.Route, gso *stack.GSO, hdrs []stack.Pac
 	e.mu.RLock()
 	defer e.mu.RUnlock()
 
-	if e.ch == nil {
+	if e.closed {
 		return 0, tcpip.ErrBadLinkEndpoint
 	}
 
@@ -225,7 +209,7 @@ func (e *Endpoint) WriteRawPacket(vv buffer.VectorisedView) *tcpip.Error {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
 
-	if e.ch == nil {
+	if e.closed {
 		return tcpip.ErrBadLinkEndpoint
 	}
 	p := PacketInfo{
