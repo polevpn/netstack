@@ -19,6 +19,7 @@ package channel
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/polevpn/netstack/tcpip"
 	"github.com/polevpn/netstack/tcpip/buffer"
@@ -39,7 +40,7 @@ type Endpoint struct {
 	mtu        uint32
 	linkAddr   tcpip.LinkAddress
 	GSO        bool
-
+	mu         *sync.RWMutex
 	// C is where outbound packets are queued.
 	ch chan PacketInfo
 }
@@ -50,11 +51,15 @@ func New(size int, mtu uint32, linkAddr tcpip.LinkAddress) *Endpoint {
 		ch:       make(chan PacketInfo, size),
 		mtu:      mtu,
 		linkAddr: linkAddr,
+		mu:       &sync.RWMutex{},
 	}
 }
 
 // Drain removes all outbound packets from the channel and counts them.
 func (e *Endpoint) Drain() int {
+
+	e.mu.RLock()
+	defer e.mu.RUnlock()
 
 	if e.ch == nil {
 		return 0
@@ -73,6 +78,9 @@ func (e *Endpoint) Drain() int {
 
 func (e *Endpoint) Read() (*PacketInfo, error) {
 
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+
 	if e.ch == nil {
 		return nil, errors.New("link channel is closed")
 	}
@@ -86,6 +94,10 @@ func (e *Endpoint) Read() (*PacketInfo, error) {
 }
 
 func (e *Endpoint) Close() {
+
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
 	if e.ch == nil {
 		return
 	}
@@ -150,6 +162,9 @@ func (e *Endpoint) LinkAddress() tcpip.LinkAddress {
 // WritePacket stores outbound packets into the channel.
 func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.NetworkProtocolNumber, pkt tcpip.PacketBuffer) *tcpip.Error {
 
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+
 	if e.ch == nil {
 		return tcpip.ErrBadLinkEndpoint
 	}
@@ -170,6 +185,9 @@ func (e *Endpoint) WritePacket(_ *stack.Route, gso *stack.GSO, protocol tcpip.Ne
 
 // WritePackets stores outbound packets into the channel.
 func (e *Endpoint) WritePackets(_ *stack.Route, gso *stack.GSO, hdrs []stack.PacketDescriptor, payload buffer.VectorisedView, protocol tcpip.NetworkProtocolNumber) (int, *tcpip.Error) {
+
+	e.mu.RLock()
+	defer e.mu.RUnlock()
 
 	if e.ch == nil {
 		return 0, tcpip.ErrBadLinkEndpoint
@@ -203,6 +221,10 @@ packetLoop:
 
 // WriteRawPacket implements stack.LinkEndpoint.WriteRawPacket.
 func (e *Endpoint) WriteRawPacket(vv buffer.VectorisedView) *tcpip.Error {
+
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+
 	if e.ch == nil {
 		return tcpip.ErrBadLinkEndpoint
 	}
