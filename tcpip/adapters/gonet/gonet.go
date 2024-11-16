@@ -550,10 +550,8 @@ func DialContextTCP(ctx context.Context, s *stack.Stack, addr tcpip.FullAddress,
 // net.PacketConn.
 type PacketConn struct {
 	deadlineTimer
-
-	stack *stack.Stack
-	ep    tcpip.Endpoint
-	wq    *waiter.Queue
+	ep tcpip.Endpoint
+	wq *waiter.Queue
 }
 
 // DialUDP creates a new PacketConn.
@@ -581,9 +579,8 @@ func DialUDP(s *stack.Stack, laddr, raddr *tcpip.FullAddress, network tcpip.Netw
 	}
 
 	c := PacketConn{
-		stack: s,
-		ep:    ep,
-		wq:    &wq,
+		ep: ep,
+		wq: &wq,
 	}
 	c.deadlineTimer.init()
 
@@ -598,6 +595,17 @@ func DialUDP(s *stack.Stack, laddr, raddr *tcpip.FullAddress, network tcpip.Netw
 			}
 		}
 	}
+
+	return &c, nil
+}
+
+func NewUDPConn(wq *waiter.Queue, ep tcpip.Endpoint) (*PacketConn, error) {
+
+	c := PacketConn{
+		ep: ep,
+		wq: wq,
+	}
+	c.deadlineTimer.init()
 
 	return &c, nil
 }
