@@ -599,7 +599,7 @@ func DialUDP(s *stack.Stack, laddr, raddr *tcpip.FullAddress, network tcpip.Netw
 	return &c, nil
 }
 
-func NewUDPConn(wq *waiter.Queue, ep tcpip.Endpoint) (*PacketConn, error) {
+func NewUDPConn(wq *waiter.Queue, ep tcpip.Endpoint) *PacketConn {
 
 	c := PacketConn{
 		ep: ep,
@@ -607,7 +607,7 @@ func NewUDPConn(wq *waiter.Queue, ep tcpip.Endpoint) (*PacketConn, error) {
 	}
 	c.deadlineTimer.init()
 
-	return &c, nil
+	return &c
 }
 
 func (c *PacketConn) newOpError(op string, err error) *net.OpError {
