@@ -93,11 +93,20 @@ func (e *Endpoint) Close() {
 
 // InjectInbound injects an inbound packet.
 func (e *Endpoint) InjectInbound(protocol tcpip.NetworkProtocolNumber, pkt tcpip.PacketBuffer) {
+
 	e.InjectLinkAddr(protocol, "", pkt)
 }
 
 // InjectLinkAddr injects an inbound packet with a remote link address.
 func (e *Endpoint) InjectLinkAddr(protocol tcpip.NetworkProtocolNumber, remote tcpip.LinkAddress, pkt tcpip.PacketBuffer) {
+
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+
+	if e.closed {
+		return
+	}
+
 	e.dispatcher.DeliverNetworkPacket(e, remote, "" /* local */, protocol, pkt)
 }
 
