@@ -2174,6 +2174,7 @@ func (e *endpoint) readyToRead(s *segment) {
 		// we set the zero window before we deliver the segment to ensure
 		// that a subsequent read of the segment will correctly trigger
 		// a non-zero notification.
+
 		if avail := e.receiveBufferAvailableLocked(); avail>>e.rcv.rcvWndScale == 0 {
 			e.stats.ReceiveErrors.ZeroRcvWindowState.Increment()
 			e.zeroWindow = true
@@ -2187,7 +2188,7 @@ func (e *endpoint) readyToRead(s *segment) {
 	e.waiterQueue.Notify(waiter.EventIn)
 }
 
-// receiveBufferAvailableLocked calculates how many bytes are still available
+// receiveBufferAvailableLocked calculates how many bytes are sftill available
 // in the receive buffer.
 // rcvListMu must be held when this function is called.
 func (e *endpoint) receiveBufferAvailableLocked() int {

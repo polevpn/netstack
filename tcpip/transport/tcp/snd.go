@@ -32,7 +32,7 @@ const (
 	minRTO = 200 * time.Millisecond
 
 	// InitialCwnd is the initial congestion window.
-	InitialCwnd = 10
+	InitialCwnd = 1000
 
 	// nDupAckThreshold is the number of duplicate ACK's required
 	// before fast-retransmit is entered.
@@ -266,7 +266,7 @@ func newSender(ep *endpoint, iss, irs seqnum.Value, sndWnd seqnum.Size, mss uint
 // their initial values.
 func (s *sender) initCongestionControl(congestionControlName tcpip.CongestionControlOption) congestionControl {
 	s.sndCwnd = InitialCwnd
-	s.sndSsthresh = math.MaxUint16
+	s.sndSsthresh = math.MaxInt32
 
 	switch congestionControlName {
 	case ccCubic:

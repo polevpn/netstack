@@ -115,12 +115,13 @@ func newHandshake(ep *endpoint, rcvWnd seqnum.Size) handshake {
 // FindWndScale determines the window scale to use for the given maximum window
 // size.
 func FindWndScale(wnd seqnum.Size) int {
+
 	if wnd < 0x10000 {
 		return 0
 	}
 
 	max := seqnum.Size(0xffff)
-	s := 0
+	s := 6
 	for wnd > max && s < header.MaxWndScale {
 		s++
 		max <<= 1
@@ -1009,6 +1010,11 @@ func (e *endpoint) handleSegments() *tcpip.Error {
 				s.decRef()
 				continue
 			}
+
+			if e.rcv.rcvNxt != e.snd.maxSentAck {
+				e.snd.sendAck()
+			}
+
 			e.snd.handleRcvdSegment(s)
 		}
 		s.decRef()
