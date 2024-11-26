@@ -2082,10 +2082,6 @@ func (e *endpoint) GetRemoteAddress() (tcpip.FullAddress, *tcpip.Error) {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
 
-	if !e.state.connected() {
-		return tcpip.FullAddress{}, tcpip.ErrNotConnected
-	}
-
 	return tcpip.FullAddress{
 		Addr: e.ID.RemoteAddress,
 		Port: e.ID.RemotePort,
